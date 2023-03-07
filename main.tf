@@ -58,8 +58,7 @@ resource "aws_security_group" "remote-traffic" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = {
-      
+  tags = {    
     "Name" = "${var.project}-${var.environment}-remote"
     "project" = var.project
     "environemnt" = var.environment  
@@ -67,4 +66,19 @@ resource "aws_security_group" "remote-traffic" {
   lifecycle {
     create_before_destroy = true
   }
+}
+
+resource "aws_instance"  "webserver" {
+   
+  ami = var.instance_ami
+  instance_type = var.instance_type
+  key_name = var.key
+  vpc_security_group_ids  = [ aws_security_group.remote-traffic.id, aws_security_group.frontend-traffic.id ]
+
+  tags = {
+      
+    "Name" = "${var.project}-${var.environment}-webserver"
+  } 
+  user_data = file("userdata.sh")
+    
 }
