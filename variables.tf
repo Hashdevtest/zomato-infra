@@ -24,3 +24,7 @@ variable "instance_type" {
 variable "key" {
   default = "aws"
 }
+
+variable "domain" {
+  default = "haashdev.tech"
+}
