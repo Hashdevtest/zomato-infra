@@ -87,3 +87,11 @@ resource "aws_eip" "webserver" {
   instance = aws_instance.webserver.id
   vpc      = true
 }
+
+resource "aws_route53_record" "blog" {             
+  zone_id = data.aws_route53_zone.selected.zone_id      
+  name    = "blog.$(var.domain)"                  
+  type    = "A"                                    
+  ttl     = 10                                 
+  records = [aws_eip.webserver.public_ip]          
+}                                                  
