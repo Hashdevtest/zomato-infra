@@ -82,3 +82,8 @@ resource "aws_instance"  "webserver" {
   user_data = file("userdata.sh")
     
 }
+
+resource "aws_eip" "webserver" {
+  instance = aws_instance.webserver.id
+  vpc      = true
+}
