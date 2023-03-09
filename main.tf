@@ -126,6 +126,22 @@ resource "aws_instance"  "webserver" {
     
 }
 
+resource "aws_instance"  "dbserver" {
+
+  ami = var.instance_ami
+  instance_type = var.instance_type
+  key_name = var.key
+  vpc_security_group_ids  = [ aws_security_group.remote-traffic.id, aws_security_group.database-traffic.id ]
+
+  tags = {
+
+    "Name" = "${var.project}-${var.environment}-dbserver"
+    "project" = var.project
+    "environemnt" = var.environment
+    }
+
+}
+
 resource "aws_eip" "webserver" {
   instance = aws_instance.webserver.id
   vpc      = true
