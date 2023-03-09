@@ -86,7 +86,9 @@ resource "aws_instance"  "webserver" {
   tags = {
       
     "Name" = "${var.project}-${var.environment}-webserver"
-  } 
+    "project" = var.project
+    "environemnt" = var.environment
+    } 
   user_data = file("userdata.sh")
     
 }
@@ -94,6 +96,11 @@ resource "aws_instance"  "webserver" {
 resource "aws_eip" "webserver" {
   instance = aws_instance.webserver.id
   vpc      = true
+
+  tags = {
+    "project" = var.project
+    "environemnt" = var.environment
+    }  
 }
 
 resource "aws_route53_record" "blog" {             
